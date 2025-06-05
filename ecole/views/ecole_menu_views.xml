@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <record id="ecole_note_view_form" model="ir.ui.view">
+        <field name="name">note.form</field>
+        <field name="model">ecole.note</field>
+        <field name="arch" type="xml">
+            <form string="Note">
+                <header>
+                    <button name="send_mail" type="object" string="Envoyer bulletin par mail" class="oe_highlight"/>
+
+                    <field name="statut" widget="statusbar" statusbar_visible="passe,double"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="student_id"/>
+
+                    </group>
+
+                    <notebook>
+                        <page string="Matières et Notes">
+                            <field name="note_line_ids">
+                                <tree editable="bottom">
+                                    <field name="available_subject_ids" invisible="1"/>
+                                    <field name="subject_id" string="Matière"
+                                           domain="[('id', 'in', available_subject_ids)]"/>
+                                    <field name="coefficient" string="Coefficient"/>
+
+                                    <field name="note" string="Note"/>
+                                </tree>
+
+                            </field>
+                            <group>
+                                <field name="moyenne" readonly="1" widget="float" string="Moyenne Générale"/>
+                            </group>
+                        </page>
+                        <page string="Informations parents">
+                            <group>
+                                <field name="email_parent"/>
+                            </group>
+
+
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+     <record id="view_tree_eleve" model="ir.ui.view">
+        <field name="name">res.partner.tree.eleve</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree string="Élèves">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_tree_prof" model="ir.ui.view">
+            <field name="name">res.users.tree.prof</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <tree string="Élèves" editable="bottom">
+                    <field name="name"/>
+                    <field name="matiere_id"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                </tree>
+            </field>
+        </record>
+    <record id="ecole_matiere_view_form" model="ir.ui.view">
+        <field name="name">matiere.form</field>
+        <field name="model">ecole.matiere</field>
+        <field name="arch" type="xml">
+            <form string="Matiére">
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="teacher_id" readonly="1"/>
+                        <field name="coefficient"/>
+
+
+
+
+                    </group>
+
+                    <notebook>
+                        <page string="Programme de matiére">
+                            <field name="ecole_matier_ids">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                            </tree>
+
+                            </field>
+
+
+                        </page>
+                        <!--                        <page string="Programme de matiére">-->
+                        <!--                            <field name="programme_matiere_ids">-->
+                        <!--                                <tree editable="bottom">-->
+                        <!--                                    <field name="name" string="Matière"/>-->
+                        <!--                                </tree>-->
+
+                        <!--                            </field>-->
+
+                        <!--                        </page>-->
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ecole_note_tree" model="ir.ui.view">
+        <field name="name">note.tree</field>
+        <field name="model">ecole.note</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="student_id" decoration-warning="statut == 'double'"
+                       decoration-success="statut == 'passe'"/>
+                <field name="moyenne" decoration-warning="statut == 'double'" decoration-success="statut == 'passe'"/>
+                <field name="statut" decoration-warning="statut == 'double'" decoration-success="statut == 'passe'"/>
+
+
+            </tree>
+        </field>
+    </record>
+    <record id="note_search" model="ir.ui.view">
+        <field name="name">note.search</field>
+        <field name="model">ecole.note</field>
+        <field name="arch" type="xml">
+            <search string="Note Search">
+
+
+                <filter name="statut" string="Statut_Passe" domain="[('statut', 'in', ['passe'])]"/>
+                <filter name="statut" string="Statut_Double" domain="[('statut', 'in', ['double'])]"/>
+
+                <!-- Ajout de l'option "Group By" pour regrouper par Postcode -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_statut" string="Statut" context="{'group_by': 'statut'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

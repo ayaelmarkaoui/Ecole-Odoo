@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_bulletin">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="res_company"/>
+                <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="doc">
+                   <!-- Titre -->
+            <div class="text-center mb-4">
+                <h1>Bulletin de notes</h1>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <strong>Élève :</strong>
+                    <span t-field="doc.student_id"/>
+                </div>
+                <div class="col-6">
+                    <strong>Moyenne générale :</strong>
+                    <span t-field="doc.moyenne"/>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-6">
+                    <strong>Statut :</strong>
+                   <span t-attf-class="text-#{'danger' if doc.statut == 'double' else 'success'}">
+                     <t t-esc="doc.statut"/>
+                   </span>                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Matière</th>
+                            <th>Coefficient</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.note_line_ids" t-as="line">
+                            <tr>
+                                <td>
+                                    <span t-field="line.subject_id"/>
+                                </td>
+                                 <td>
+                                    <span t-field="line.coefficient"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.note"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+                </t>
+ </t>
+            </t>
+        </template>
+       <record id="action_report_bulletin_report" model="ir.actions.report">
+            <field name="name">report bulletin</field>
+            <field name="model">ecole.note</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ecole.report_bulletin</field>
+            <field name="report_file">ecole.report_bulletin</field>
+            <field name="binding_model_id" ref="ecole.model_ecole_note"/>
+            <field name="binding_type">report</field>
+            <field name="attachment"></field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="attachment_use" eval="False"/>
+        </record>
+
+
+
+    </data>
+</odoo>

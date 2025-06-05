@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <menuitem id="ecole_root"
+              name="Ecole"
+              sequence="10"
+              web_icon="ecole,static/description/ecole.png"/>
+
+
+  
+    <record id="action_eleves" model="ir.actions.act_window">
+        <field name="name">Eleves</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">[('is_student', '=', True)]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="ecole.view_tree_eleve"/>
+    </record>
+    <record id="action_professeurs" model="ir.actions.act_window">
+        <field name="name">Professeurs</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+        <field name="views" eval="[(ref('ecole.view_tree_prof'), 'tree'), (ref('ecole_note_view_form'), 'form')]"/>
+
+
+    </record>
+    <record id="action_matieres" model="ir.actions.act_window">
+        <field name="name">Matiere</field>
+        <field name="res_model">ecole.matiere</field> 
+        <field name="view_mode">tree,form</field>
+        <field name="views" eval="[(ref('ecole_matiere_view_form'), 'form')]"/>
+
+    </record>
+
+    <record id="action_notes" model="ir.actions.act_window">
+        <field name="name">Notes</field>
+        <field name="res_model">ecole.note</field> 
+        <field name="view_mode">tree,form</field>
+                <field name="search_view_id" ref="ecole.note_search"/>
+
+    </record>
+
+    <menuitem id="ecole_principle"
+            name="Ecole"
+            sequence="10"
+            web_icon="ecole,static/description/ecole.png"
+            action="action_eleves" /> 
+     <menuitem id="ecole_eleve_principle"
+            name="Eleves"
+            sequence="10"
+            parent="ecole_principle"
+            action="action_eleves"
+          />  
+     <menuitem id="ecole_prof_principle"
+            name="professeurs"
+            sequence="10"
+            parent="ecole_principle"
+            action="action_professeurs"
+          />  
+     <menuitem id="ecole_matiere_principle"
+            name="Matieres"
+            sequence="10"
+            parent="ecole_principle"
+            action="action_matieres"
+          />
+        <menuitem id="ecole_note_principle"
+                name="Notes"
+                sequence="10"
+                parent="ecole_principle"
+                action="action_notes" />
+
+
+</odoo>
+
